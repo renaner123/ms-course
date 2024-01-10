@@ -12,7 +12,6 @@ import com.springboot.hrpayroll.feignclients.WorkerFeignClient;
 @Service
 public class PaymentService {
 	
-
 	@Autowired
 	private WorkerFeignClient workerFeignClient;
 
