@@ -1,6 +1,7 @@
 package com.devsuperior.hroauth.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +28,13 @@ public class AuthotirizationServerConfig extends AuthorizationServerConfigurerAd
 
 	@Autowired
 	private AuthenticationManager autheticationManager;
-
+	
+	@Value("${oauth.client.name}")
+	private String clientName;
+	
+	@Value("${oauth.client.secret}")
+	private String clientSecret;
+	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 		security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
@@ -35,7 +42,7 @@ public class AuthotirizationServerConfig extends AuthorizationServerConfigurerAd
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory().withClient("myappname123").secret(passwordEncoder.encode("myappsecret123"))
+		clients.inMemory().withClient(clientName).secret(passwordEncoder.encode(clientSecret))
 				.scopes("read", "write").authorizedGrantTypes("password").accessTokenValiditySeconds(86400);
 	}
 
